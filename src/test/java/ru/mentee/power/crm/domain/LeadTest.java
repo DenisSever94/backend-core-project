@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.mentee.power.crm.domain.Lead;
 
 @DisplayName("Testing for Lead class")
 class LeadTest {
