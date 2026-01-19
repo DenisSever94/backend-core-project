@@ -1,5 +1,7 @@
 package ru.mentee.power.crm.storage;
 
+import java.util.UUID;
+
 import ru.mentee.power.crm.domain.Lead;
 
 public class LeadStorage {
@@ -48,5 +50,18 @@ public class LeadStorage {
       }
     }
     return count;
+  }
+
+  public Lead findById(UUID id) {
+    if (id == null) {
+      throw new IllegalArgumentException("ID cannot be null");
+    }
+    for (int i = 0; i < leads.length; i++) {
+      Lead currentLead = leads[i];
+      if (currentLead != null && currentLead.getId().equals(id)) {
+        return currentLead;
+      }
+    }
+    return null;
   }
 }
