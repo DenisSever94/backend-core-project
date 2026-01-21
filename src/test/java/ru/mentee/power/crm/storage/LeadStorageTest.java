@@ -1,12 +1,13 @@
 package ru.mentee.power.crm.storage;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+import ru.mentee.power.crm.domain.Address;
+import ru.mentee.power.crm.domain.Contact;
 import ru.mentee.power.crm.domain.Lead;
 
 class LeadStorageTest {
@@ -14,8 +15,10 @@ class LeadStorageTest {
   @Test
   void shouldAddLeadInArray() {
     UUID id = UUID.randomUUID();
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead lead = new Lead(id, contact, "TestCorp", "NEW");
     LeadStorage leadStorage = new LeadStorage();
-    Lead lead = new Lead(id, "ivan@mail.ru", "+79119829801", "Tech", "New");
 
     boolean added = leadStorage.add(lead);
 
@@ -27,9 +30,12 @@ class LeadStorageTest {
   @Test
   void shouldRejectDuplicateWhenEmailAlreadyExist() {
     UUID id = UUID.randomUUID();
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead existingLead = new Lead(id, contact, "TestCorp", "NEW");
+    Lead duplicateLead = new Lead(id, contact, "TestCorp", "NEW");
+
     LeadStorage leadStorage = new LeadStorage();
-    Lead existingLead = new Lead(id, "ivan@mail.ru", "+79119829801", "Tech", "New");
-    Lead duplicateLead = new Lead(id, "ivan@mail.ru", "+79119829801", "Tech", "New");
     leadStorage.add(existingLead);
 
     boolean added = leadStorage.add(duplicateLead);
@@ -41,14 +47,43 @@ class LeadStorageTest {
 
   @Test
   void shouldThrowExceptionWhenStorageIsFull() {
-    UUID id = UUID.randomUUID();
     LeadStorage leadStorage = new LeadStorage();
+
+    // Создаём 100 УНИКАЛЬНЫХ Lead (с разными email)
     for (int i = 0; i < 100; i++) {
-      leadStorage.add(new Lead(UUID.randomUUID(), "lead" + i + "ivan@mail.ru", "+79119829801", "Tech", "New"));
+      // Каждый Lead должен иметь УНИКАЛЬНЫЙ contact с уникальным email
+      Contact contact = new Contact(
+          "ivaner" + i + "@mail.ru",  // Уникальный email для каждого!
+          "+79119829801",
+          new Address("Москва", "Молодежная 12", "32345")
+      );
+
+      Lead lead = new Lead(
+          UUID.randomUUID(),  // Уникальный UUID
+          contact,            // Уникальный contact
+          "Tech",
+          "NEW"
+      );
+
+      boolean added = leadStorage.add(lead);
+      assertThat(added).isTrue(); // Убеждаемся, что каждый добавился
     }
 
-    Lead hundredFirstLead = new Lead(id, "ivaner@mail.ru", "+79119829801", "Tech", "New");
+    // 101-й Lead (тоже с уникальным email)
+    Contact hundredFirstContact = new Contact(
+        "hundredfirst@mail.ru",  // Ещё один уникальный email
+        "+79119829801",
+        new Address("Москва", "Молодежная 12", "32345")
+    );
 
+    Lead hundredFirstLead = new Lead(
+        UUID.randomUUID(),
+        hundredFirstContact,
+        "Tech",
+        "NEW"
+    );
+
+    // Теперь должно бросить исключение
     assertThatThrownBy(() -> leadStorage.add(hundredFirstLead))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Storage is full");
@@ -58,9 +93,16 @@ class LeadStorageTest {
   void shouldReturnAddedOnlyWhenFindAllCalled() {
     UUID firstId = UUID.randomUUID();
     UUID secondId = UUID.randomUUID();
+
+    Address firstAddress = new Address("Москва", "Молодежная 12", "34345");
+    Address secondAddress = new Address("СПБ", "пр Невский 12", "32345");
+    Contact firstContact = new Contact("test@example.com", "+71234567890", firstAddress);
+    Contact secondContact = new Contact("testing@mail.ru", "+5495849303", secondAddress);
+
+    Lead firstLead = new Lead(firstId, firstContact, "TestCorp", "NEW");
+    Lead secondLead = new Lead(secondId, secondContact, "Tech", "NEW");
     LeadStorage leadStorage = new LeadStorage();
-    Lead firstLead = new Lead(firstId, "ivan@mail.ru", "+79119829801", "Tech", "New");
-    Lead secondLead = new Lead(secondId, "ivan43@mail.ru", "+79119829801", "Tech", "New");
+
     leadStorage.add(firstLead);
     leadStorage.add(secondLead);
 

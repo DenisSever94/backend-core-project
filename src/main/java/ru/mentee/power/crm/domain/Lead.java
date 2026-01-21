@@ -1,41 +1,26 @@
 package ru.mentee.power.crm.domain;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
-public class Lead {
-  private UUID id;
-  private String email;
-  private String phone;
-  private String company;
-  private String status;
+public record Lead(UUID id, Contact contact, String company, String status) {
+  private static final Set<String> ALLOWED_STATUSES = Set.of("NEW", "QUALIFIED", "CONVERTED");
 
-  public Lead(UUID id, String email, String phone, String company, String status) {
-    this.id = id;
-    this.email = email;
-    this.phone = phone;
-    this.company = company;
-    this.status = status;
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public String getCompany() {
-    return company;
-  }
-
-  public String getStatus() {
-    return status;
+  public Lead {
+    if (id == null) {
+      throw new IllegalArgumentException("ID must not be null");
+    }
+    if (status == null || !ALLOWED_STATUSES.contains(status)) {
+      throw new IllegalArgumentException(
+          "Status must be one of: NEW, QUALIFIED, CONVERTED. Got: " + status);
+    }
+    if (contact == null) {
+      throw new IllegalArgumentException("Contact must not be null");
+    }
+    if (company == null || company.isBlank()) {
+      throw new IllegalArgumentException("Company must not be null or blank");
+    }
   }
 
   @Override
@@ -43,26 +28,14 @@ public class Lead {
     if (this == o) {
       return true;
     }
-    if (o == null || !(o instanceof Lead)) {
+    if (!(o instanceof Lead lead)) {
       return false;
     }
-    Lead lead = (Lead) o;
     return Objects.equals(id, lead.id);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id);
-  }
-
-  @Override
-  public String toString() {
-    return "Lead{"
-        + "id='" + id + '\''
-        + ", email='" + email + '\''
-        + ", phone='" + phone + '\''
-        + ", company='" + company + '\''
-        + ", status='" + status + '\''
-        + '}';
   }
 }
