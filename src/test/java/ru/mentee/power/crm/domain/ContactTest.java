@@ -1,6 +1,7 @@
 package ru.mentee.power.crm.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,24 +9,44 @@ class ContactTest {
 
   @Test
   void shouldCreateContactWhenValidData() {
-    Contact contact = new Contact("Ivan", "Ivanov", "ivanivanov@mail.ru");
-    String firstName = contact.firstName();
-    String lastName = contact.lastName();
-    String email = contact.email();
+    Address address = new Address("Москва", "Молодежная 12", "23345");
+    Contact contact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455", address);
 
-    String actualFirstName = "Ivan";
-    String actualLastName = "Ivanov";
-    String actualEmail = "ivanivanov@mail.ru";
+    assertThat(contact.address()).isEqualTo(address);
+    assertThat(contact.address())
+        .extracting(Address::city, Address::street, Address::zip)
+        .containsExactlyInAnyOrder("Москва", "Молодежная 12", "23345");
+  }
 
-    assertThat(firstName).isEqualTo(actualFirstName);
-    assertThat(lastName).isEqualTo(actualLastName);
-    assertThat(email).isEqualTo(actualEmail);
+  @Test
+  void shouldDelegateToAddressWhenAccessingCity() {
+    Contact contact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455",
+        new Address("Москва", "Молодежная 12", "23345"));
+
+    assertThat(contact.address().city()).isEqualTo("Москва");
+    assertThat(contact.address().street()).isEqualTo("Молодежная 12");
+  }
+
+  @Test
+  void shouldThrowExceptionWithAddressIsNull() {
+
+    assertThatThrownBy(() -> new Contact("ivanivanov@mail.ru", "+79813434455", null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Address");
   }
 
   @Test
   void shouldBeEqualWhenSameData() {
-    Contact firstContact = new Contact("Ivan", "Ivanov", "ivanivanov@mail.ru");
-    Contact secondContact = new Contact("Ivan", "Ivanov", "ivanivanov@mail.ru");
+    Contact firstContact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455",
+        new Address("Москва", "Молодежная 12", "23345"));
+
+    Contact secondContact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455",
+        new Address("Москва", "Молодежная 12", "23345"));
+
 
     assertThat(firstContact).isEqualTo(secondContact);
     assertThat(secondContact.hashCode()).isEqualTo(firstContact.hashCode());
@@ -33,8 +54,12 @@ class ContactTest {
 
   @Test
   void shouldNotBeEqualWhenDifferentData() {
-    Contact firstContact = new Contact("Ivan", "Ivanov", "ivanivanov@mail.ru");
-    Contact secondContact = new Contact("Oleg", "Ivanov", "olegivanov@mail.ru");
+    Contact firstContact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455",
+        new Address("Москва", "Молодежная 12", "23345"));
+    Contact secondContact = new Contact(
+        "ivanivanov@mail.ru", "+79813434455",
+        new Address("СПБ", "пр Невский 12", "23345"));
 
     assertThat(firstContact).isNotEqualTo(secondContact);
   }

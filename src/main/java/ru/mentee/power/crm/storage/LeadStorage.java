@@ -9,8 +9,14 @@ public class LeadStorage {
 
   public boolean add(Lead lead) {
     for (int index = 0; index < leads.length; index++) {
-      if (leads[index] != null && leads[index].getEmail().equals(lead.getEmail())) {
-        return false;
+      if (leads[index] != null) {
+
+        String existingEmail = leads[index].contact().email();
+        String newEmail = lead.contact().email();
+
+        if (existingEmail != null && existingEmail.equals(newEmail)) {
+          return false;
+        }
       }
     }
     for (int index = 0; index < leads.length; index++) {
@@ -58,7 +64,7 @@ public class LeadStorage {
     }
     for (int i = 0; i < leads.length; i++) {
       Lead currentLead = leads[i];
-      if (currentLead != null && currentLead.getId().equals(id)) {
+      if (currentLead != null && currentLead.id().equals(id)) {
         return currentLead;
       }
     }
