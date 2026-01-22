@@ -14,7 +14,7 @@ public record Customer(UUID id, Contact contact, Address billingAddress, String 
       throw new IllegalArgumentException("Contact must not be null");
     }
     if (billingAddress == null) {
-      throw new IllegalArgumentException("Address must not be null");
+      throw new IllegalArgumentException("Billing address must not be null");
     }
     if (loyaltyTier == null || !LOYALTY_TIER.contains(loyaltyTier)) {
       throw new IllegalArgumentException(
