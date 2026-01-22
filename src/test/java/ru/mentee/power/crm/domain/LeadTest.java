@@ -40,6 +40,36 @@ class LeadTest {
   }
 
   @Test
+  void shouldThrowExceptionWhenLeadIdIsNull() {
+    Address address = new Address("Москва", "Молодежная 12", "21345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+
+    assertThatThrownBy(() -> new Lead(null, contact, "Big", "INVALID"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("ID must not be null");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenLeadCompanyIsBlank() {
+    Address address = new Address("Москва", "Молодежная 12", "21345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, " ", "NEW"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Company must not be null or blank");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenLeadCompanyIsNull() {
+    Address address = new Address("Москва", "Молодежная 12", "21345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, null, "NEW"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Company must not be null or blank");
+  }
+
+  @Test
   void shouldCreateLeadWhenValidData() {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);

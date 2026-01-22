@@ -63,4 +63,49 @@ class ContactTest {
 
     assertThat(firstContact).isNotEqualTo(secondContact);
   }
+
+  @Test
+  void shouldThrowExceptionWithContactEmailIsNull() {
+    Address address = new Address("Москва", "Молодежная 23", "43454");
+
+    assertThatThrownBy(() -> new Contact(null, "+79118284556", address))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Email must not be null or blank");
+  }
+
+  @Test
+  void shouldThrowExceptionWithContactEmailIsBlank() {
+    Address address = new Address("Москва", "Молодежная 23", "43454");
+
+    assertThatThrownBy(() -> new Contact("", "+79118284556", address))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Email must not be null or blank");
+  }
+
+  @Test
+  void shouldThrowExceptionWithContactEmailIsNullOrPhoneIsNull() {
+    Address address = new Address("Москва", "Молодежная 23", "43454");
+
+    assertThatThrownBy(() -> new Contact(null, null, address))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Contact must not be null");
+  }
+
+  @Test
+  void shouldThrowExceptionWithPhoneIsNull() {
+    Address address = new Address("Москва", "Молодежная 23", "43454");
+
+    assertThatThrownBy(() -> new Contact("test@mail.ru", null, address))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Phone must not be null or blank");
+  }
+
+  @Test
+  void shouldThrowExceptionWithPhoneIsBlank() {
+    Address address = new Address("Москва", "Молодежная 23", "43454");
+
+    assertThatThrownBy(() -> new Contact("test@mail.ru", " ", address))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Phone must not be null or blank");
+  }
 }
