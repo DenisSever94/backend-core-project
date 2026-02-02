@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import ru.mentee.power.crm.domain.Lead;
-import ru.mentee.power.crm.domain.Repository;
+import ru.mentee.power.crm.repository.Repository;
 
 public class LeadRepository implements Repository<Lead> {
   private final Map<UUID, Lead> storage = new HashMap<>();

@@ -4,17 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import ru.mentee.power.crm.domain.Address;
-import ru.mentee.power.crm.domain.Contact;
-import ru.mentee.power.crm.domain.Lead;
-import ru.mentee.power.crm.domain.LeadStatus;
-import ru.mentee.power.crm.domain.Repository;
+import ru.mentee.power.crm.domain.*;
+import ru.mentee.power.crm.repository.LeadRepository;
+import ru.mentee.power.crm.repository.Repository;
 
 public class LeadService {
 
   private final Repository<Lead> repository;
 
-  public LeadService(Repository<Lead> repository) {
+  public LeadService(LeadRepository repository) {
     this.repository = repository;
   }
 
