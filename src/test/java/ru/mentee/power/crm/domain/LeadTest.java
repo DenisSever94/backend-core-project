@@ -16,7 +16,7 @@ class LeadTest {
   void shouldDemonstrateThreeLevelCompositionWhenAccessingCity() {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(UUID.randomUUID(), contact, "Tech", "NEW");
+    Lead lead = new Lead(UUID.randomUUID(), contact, "Tech", LeadStatus.NEW);
 
     String city = lead.contact().address().city();
 
@@ -25,7 +25,7 @@ class LeadTest {
 
   @Test
   void shouldThrowExceptionWhenContactIsNull() {
-    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), null, "Big", "NEW"))
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), null, "Big", LeadStatus.NEW))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Contact must not be null");
   }
@@ -34,7 +34,7 @@ class LeadTest {
   void shouldThrowExceptionWhenInvalidStatus() {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, "Big", "INVALID"))
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, "Big", null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Status must be one of: NEW, QUALIFIED, CONVERTED. Got: ");
   }
@@ -44,7 +44,7 @@ class LeadTest {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
 
-    assertThatThrownBy(() -> new Lead(null, contact, "Big", "INVALID"))
+    assertThatThrownBy(() -> new Lead(null, contact, "Big", LeadStatus.INVALID))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("ID must not be null");
   }
@@ -54,7 +54,7 @@ class LeadTest {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
 
-    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, " ", "NEW"))
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, " ", LeadStatus.NEW))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Company must not be null or blank");
   }
@@ -64,7 +64,7 @@ class LeadTest {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
 
-    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, null, "NEW"))
+    assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, null, LeadStatus.NEW))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Company must not be null or blank");
   }
@@ -73,7 +73,7 @@ class LeadTest {
   void shouldCreateLeadWhenValidData() {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(UUID.randomUUID(), contact, "Tech", "NEW");
+    Lead lead = new Lead(UUID.randomUUID(), contact, "Tech", LeadStatus.NEW);
 
     assertThat(lead.contact()).isEqualTo(contact);
   }
@@ -82,7 +82,7 @@ class LeadTest {
   void shouldAccessEmailThroughDelegationWhenLeadCreated() {
     Address address = new Address("Москва", "Молодежная", "45456");
     Contact contact = new Contact("test@mail.ru", "+79843435654", address);
-    Lead lead = new Lead(UUID.randomUUID(), contact, "BigTech", "NEW");
+    Lead lead = new Lead(UUID.randomUUID(), contact, "BigTech", LeadStatus.NEW);
 
     String actualEmail = lead.contact().email();
     String actualCity = lead.contact().address().city();
@@ -98,8 +98,8 @@ class LeadTest {
     Address secondAddress = new Address("СПБ", "пр Невский 112", "67804");
     Contact firstContact = new Contact("test@mail.ru", "+78234568890", firstAddress);
     Contact secondContact = new Contact("test@bk.ru", "+79653244593", secondAddress);
-    Lead firstLead = new Lead(expectedId, firstContact, "Big", "NEW");
-    Lead secondLead = new Lead(expectedId, secondContact, "Big", "NEW");
+    Lead firstLead = new Lead(expectedId, firstContact, "Big", LeadStatus.NEW);
+    Lead secondLead = new Lead(expectedId, secondContact, "Big", LeadStatus.NEW);
 
     assertThat(firstLead).isEqualTo(secondLead);
   }
@@ -109,7 +109,7 @@ class LeadTest {
     UUID id = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(id, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(id, contact, "TestCorp", LeadStatus.NEW);
     LeadStorage leadStorage = new LeadStorage();
 
     boolean added = leadStorage.add(lead);
@@ -125,7 +125,7 @@ class LeadTest {
     UUID expectedId = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
 
     UUID actualId = lead.id();
 
@@ -137,7 +137,7 @@ class LeadTest {
     UUID expectedId = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
 
     String email = lead.contact().email();
 
@@ -151,7 +151,7 @@ class LeadTest {
     UUID expectedId = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
 
     String phone = lead.contact().phone();
 
@@ -165,7 +165,7 @@ class LeadTest {
     UUID expectedId = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
 
     String company = lead.company();
 
@@ -179,13 +179,11 @@ class LeadTest {
     UUID expectedId = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
 
-    String status = lead.status();
+    String actualStatus = LeadStatus.NEW.toString();
 
-    String actualStatus = "NEW";
-
-    assertThat(status).isEqualTo(actualStatus);
+    assertThat(lead.status().toString()).isEqualTo(actualStatus);
   }
 
   @Test
@@ -193,7 +191,7 @@ class LeadTest {
     UUID expectedId = UUID.fromString("c95b1eb2-1a94-45c5-8cf4-13035d321048");
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
     String expected = "Lead[id=c95b1eb2-1a94-45c5-8cf4-13035d321048, "
         + "contact=Contact[email=test@example.com, "
         + "phone=+71234567890, "

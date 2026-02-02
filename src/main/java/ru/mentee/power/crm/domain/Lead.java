@@ -4,8 +4,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public record Lead(UUID id, Contact contact, String company, String status) {
-  private static final Set<String> ALLOWED_STATUSES = Set.of("NEW", "QUALIFIED", "CONVERTED");
+public record Lead(UUID id, Contact contact, String company, LeadStatus status) {
+  private static final Set<LeadStatus> ALLOWED_STATUSES =
+      Set.of(LeadStatus.NEW, LeadStatus.CONVERTED, LeadStatus.QUALIFIED, LeadStatus.INVALID);
 
   public Lead {
     if (id == null) {
@@ -21,6 +22,7 @@ public record Lead(UUID id, Contact contact, String company, String status) {
     if (company == null || company.isBlank()) {
       throw new IllegalArgumentException("Company must not be null or blank");
     }
+
   }
 
   @Override

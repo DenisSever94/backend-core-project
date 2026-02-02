@@ -6,11 +6,14 @@ import java.util.UUID;
 
 public interface Repository<T> {
 
-  void add(T entity);
+  T save(T entity);
 
-  void remove(UUID id);
+  void delete(UUID id);
 
   Optional<T> findById(UUID id);
 
+  Optional<T> findByEmail(String email);
+
   List<T> findAll();
+
 }
