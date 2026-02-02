@@ -33,7 +33,6 @@ repositories {
 
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
-//    testImplementation "org.assertj:assertj-core:${assertjVersion}"
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -64,6 +63,7 @@ jacoco {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }.absolutePath}"
 }
 
 jacocoTestReport {

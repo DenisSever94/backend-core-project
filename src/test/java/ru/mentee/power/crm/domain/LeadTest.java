@@ -36,7 +36,7 @@ class LeadTest {
     Contact contact = new Contact("test@example.com", "+71234567890", address);
     assertThatThrownBy(() -> new Lead(UUID.randomUUID(), contact, "Big", null))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Status must be one of: NEW, QUALIFIED, CONVERTED. Got: ");
+        .hasMessageContaining("Status must not be null");
   }
 
   @Test
@@ -44,7 +44,7 @@ class LeadTest {
     Address address = new Address("Москва", "Молодежная 12", "21345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
 
-    assertThatThrownBy(() -> new Lead(null, contact, "Big", LeadStatus.INVALID))
+    assertThatThrownBy(() -> new Lead(null, contact, "Big", LeadStatus.NEW))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("ID must not be null");
   }

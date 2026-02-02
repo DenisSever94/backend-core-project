@@ -1,7 +1,7 @@
 package ru.mentee.power.crm.domain;
 
 public enum LeadStatus {
-  NEW, QUALIFIED, CONVERTED, INVALID;
+  NEW, QUALIFIED, CONVERTED, INVALID, CONTACTED;
 
   public static boolean isValid(String status) {
     try {
