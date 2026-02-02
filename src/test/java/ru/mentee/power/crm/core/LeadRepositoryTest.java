@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import ru.mentee.power.crm.domain.Address;
 import ru.mentee.power.crm.domain.Contact;
 import ru.mentee.power.crm.domain.Lead;
+import ru.mentee.power.crm.domain.LeadStatus;
 
 class LeadRepositoryTest {
   private static final Address ADDRESS = new Address("Москва", "Молодежная 22", "45323");
@@ -27,7 +28,7 @@ class LeadRepositoryTest {
 
   @Test
   void shouldSavedLeadWithLeadId() {
-    Lead lead = new Lead(FIXED_ID, CONTACT, "Big", "NEW");
+    Lead lead = new Lead(FIXED_ID, CONTACT, "Big", LeadStatus.NEW);
 
     repository.save(lead);
 
@@ -36,9 +37,9 @@ class LeadRepositoryTest {
 
   @Test
   void shouldReturnAllLeadsWithFindAll() {
-    Lead first = new Lead(UUID.randomUUID(), CONTACT, "Big", "NEW");
-    Lead second = new Lead(UUID.randomUUID(), CONTACT, "Big", "NEW");
-    Lead three = new Lead(UUID.randomUUID(), CONTACT, "Big", "NEW");
+    Lead first = new Lead(UUID.randomUUID(), CONTACT, "Big", LeadStatus.NEW);
+    Lead second = new Lead(UUID.randomUUID(), CONTACT, "Big", LeadStatus.NEW);
+    Lead three = new Lead(UUID.randomUUID(), CONTACT, "Big", LeadStatus.NEW);
 
     repository.save(first);
     repository.save(second);
@@ -52,7 +53,7 @@ class LeadRepositoryTest {
 
   @Test
   void shouldDeleteLeadWithHashMap() {
-    Lead first = new Lead(FIXED_ID, CONTACT, "Big", "NEW");
+    Lead first = new Lead(FIXED_ID, CONTACT, "Big", LeadStatus.NEW);
 
     repository.save(first);
     repository.delete(FIXED_ID);
@@ -62,8 +63,8 @@ class LeadRepositoryTest {
 
   @Test
   void shouldDuplicate() {
-    Lead first = new Lead(UUID.randomUUID(), CONTACT, "Big", "NEW");
-    Lead second = new Lead(UUID.randomUUID(), CONTACT, "Tech", "NEW");
+    Lead first = new Lead(UUID.randomUUID(), CONTACT, "Big", LeadStatus.NEW);
+    Lead second = new Lead(UUID.randomUUID(), CONTACT, "Tech", LeadStatus.NEW);
 
     repository.save(first);
     repository.save(second);
@@ -80,8 +81,8 @@ class LeadRepositoryTest {
 
   @Test
   void shouldOverwriteLeadWhenSaveWithSameId() {
-    Lead first = new Lead(FIXED_ID, CONTACT, "Mig", "NEW");
-    Lead second = new Lead(FIXED_ID, CONTACT2, "Web", "NEW");
+    Lead first = new Lead(FIXED_ID, CONTACT, "Mig", LeadStatus.NEW);
+    Lead second = new Lead(FIXED_ID, CONTACT2, "Web", LeadStatus.NEW);
 
     repository.save(first);
     repository.save(second);
@@ -93,7 +94,7 @@ class LeadRepositoryTest {
 
   @Test
   void shouldFindExistingLead() {
-    Lead lead = new Lead(FIXED_ID, CONTACT, "Big", "NEW");
+    Lead lead = new Lead(FIXED_ID, CONTACT, "Big", LeadStatus.NEW);
 
     repository.save(lead);
 
@@ -116,7 +117,7 @@ class LeadRepositoryTest {
           "+7" + i,
           new Address("City" + i, "Street" + i, "ZIP" + i)
       );
-      Lead lead = new Lead(id, contact, "Company" + i, "NEW");
+      Lead lead = new Lead(id, contact, "Company" + i, LeadStatus.NEW);
       repository.save(lead);
       leadList.add(lead);
     }
@@ -145,14 +146,12 @@ class LeadRepositoryTest {
 
   @Test
   void shouldSaveBothLeadsEvenWithSameEmailAndPhoneBecauseRepositoryDoesNotCheckBusinessRules() {
-    Lead origin = new Lead(UUID.randomUUID(), CONTACT, "Big", "NEW");
-    Lead duplicate = new Lead(UUID.randomUUID(), CONTACT, "Tech", "NEW");
+    Lead origin = new Lead(UUID.randomUUID(), CONTACT, "Big", LeadStatus.NEW);
+    Lead duplicate = new Lead(UUID.randomUUID(), CONTACT, "Tech", LeadStatus.NEW);
 
     repository.save(origin);
     repository.save(duplicate);
 
     assertThat(repository.findAll()).hasSize(2);
-
-
   }
 }

@@ -8,13 +8,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 import ru.mentee.power.crm.domain.Lead;
+import ru.mentee.power.crm.domain.Repository;
 
-public class LeadRepository {
-
+public class LeadRepository implements Repository<Lead> {
   private final Map<UUID, Lead> storage = new HashMap<>();
 
-  public void save(Lead lead) {
+  public Lead save(Lead lead) {
     storage.put(lead.id(), lead);
+    return lead;
   }
 
   public Optional<Lead> findById(UUID id) {
@@ -27,6 +28,16 @@ public class LeadRepository {
         .stream()
         .toList();
     return new ArrayList<>(findAllLeads);
+  }
+
+  public Optional<Lead> findByEmail(String email) {
+    if (email == null || email.isBlank()) {
+      return Optional.empty();
+    }
+    return storage.values().stream()
+        .filter(lead -> lead.contact() != null)
+        .filter(lead -> email.equals(lead.contact().email()))
+        .findFirst();
   }
 
   public void delete(UUID id) {

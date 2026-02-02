@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import ru.mentee.power.crm.domain.Address;
 import ru.mentee.power.crm.domain.Contact;
 import ru.mentee.power.crm.domain.Lead;
+import ru.mentee.power.crm.domain.LeadStatus;
 
 class LeadStorageTest {
 
@@ -17,7 +18,7 @@ class LeadStorageTest {
     UUID id = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(id, contact, "TestCorp", "NEW");
+    Lead lead = new Lead(id, contact, "TestCorp", LeadStatus.NEW);
     LeadStorage leadStorage = new LeadStorage();
 
     boolean added = leadStorage.add(lead);
@@ -32,8 +33,8 @@ class LeadStorageTest {
     UUID id = UUID.randomUUID();
     Address address = new Address("Москва", "Молодежная 12", "34345");
     Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead existingLead = new Lead(id, contact, "TestCorp", "NEW");
-    Lead duplicateLead = new Lead(id, contact, "TestCorp", "NEW");
+    Lead existingLead = new Lead(id, contact, "TestCorp", LeadStatus.NEW);
+    Lead duplicateLead = new Lead(id, contact, "TestCorp", LeadStatus.NEW);
 
     LeadStorage leadStorage = new LeadStorage();
     leadStorage.add(existingLead);
@@ -62,7 +63,7 @@ class LeadStorageTest {
           UUID.randomUUID(),  // Уникальный UUID
           contact,            // Уникальный contact
           "Tech",
-          "NEW"
+          LeadStatus.NEW
       );
 
       boolean added = leadStorage.add(lead);
@@ -80,7 +81,7 @@ class LeadStorageTest {
         UUID.randomUUID(),
         hundredFirstContact,
         "Tech",
-        "NEW"
+        LeadStatus.NEW
     );
 
     // Теперь должно бросить исключение
@@ -99,8 +100,8 @@ class LeadStorageTest {
     Contact firstContact = new Contact("test@example.com", "+71234567890", firstAddress);
     Contact secondContact = new Contact("testing@mail.ru", "+5495849303", secondAddress);
 
-    Lead firstLead = new Lead(firstId, firstContact, "TestCorp", "NEW");
-    Lead secondLead = new Lead(secondId, secondContact, "Tech", "NEW");
+    Lead firstLead = new Lead(firstId, firstContact, "TestCorp", LeadStatus.NEW);
+    Lead secondLead = new Lead(secondId, secondContact, "Tech", LeadStatus.NEW);
     LeadStorage leadStorage = new LeadStorage();
 
     leadStorage.add(firstLead);

@@ -1,45 +1,51 @@
 package ru.mentee.power.crm.domain.infrastructure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import ru.mentee.power.crm.domain.Lead;
-import ru.mentee.power.crm.domain.Repository;
+import ru.mentee.power.crm.domain.LeadRepository;
 
-public class InMemoryLeadRepository implements Repository<Lead> {
-  private final List<Lead> storage = new ArrayList<>();
+public class InMemoryLeadRepository implements LeadRepository {
+  private final Map<UUID, Lead> storage = new HashMap<>();
+  private final Map<String, UUID> emailIndex = new HashMap<>();
 
   @Override
-  public void add(Lead lead) {
-    if (storage.contains(lead)) {
-      throw new IllegalArgumentException("Lead with ID " + lead.id() + " already exists");
-    }
-    storage.add(lead);
+  public Lead save(Lead lead) {
+    storage.put(lead.id(), lead);
+    emailIndex.put(lead.contact().email(), lead.id());
+    return lead;
   }
 
   @Override
-  public void remove(UUID id) {
-    Objects.requireNonNull(id, "ID cannot be null");
+  public void delete(UUID id) {
+    Lead removed = storage.remove(id);
 
-    boolean removed = storage.removeIf(lead -> lead.id().equals(id));
-
-    if (!removed) {
-      throw new IllegalArgumentException("Lead not found with ID: " + id);
+    if (removed != null) {
+      emailIndex.remove(removed.contact().email());
     }
   }
 
   @Override
   public Optional<Lead> findById(UUID id) {
-    return storage.stream()
-        .filter(lead -> lead.id()
-            .equals(id)).findFirst();
+    return Optional.ofNullable(storage.get(id));
+  }
+
+  @Override
+  public Optional<Lead> findByEmail(String email) {
+    UUID id = emailIndex.get(email);
+    if (id == null) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(storage.get(id));
   }
 
   @Override
   public List<Lead> findAll() {
-    return new ArrayList<>(storage);
+    return new ArrayList<>(storage.values());
   }
 }
