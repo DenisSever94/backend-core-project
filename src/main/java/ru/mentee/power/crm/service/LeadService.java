@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import ru.mentee.power.crm.domain.*;
+import ru.mentee.power.crm.domain.Address;
+import ru.mentee.power.crm.domain.Contact;
+import ru.mentee.power.crm.domain.Lead;
+import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.repository.LeadRepository;
 import ru.mentee.power.crm.repository.Repository;
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.mentee.power.crm.domain.Address;
 import ru.mentee.power.crm.domain.Lead;
-import ru.mentee.power.crm.repository.LeadRepository;
 import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.domain.infrastructure.InMemoryLeadRepository;
+import ru.mentee.power.crm.repository.LeadRepository;
 
 class LeadServiceTest {
   private LeadService service;
