@@ -26,6 +26,7 @@ public class ApplicationLead {
     service.addLead("test3@mail.ru", "+7954454", address, "Company 3", LeadStatus.NEW);
     service.addLead("test4@mail.ru", "+795454", address, "Company 4", LeadStatus.NEW);
     service.addLead("test5@mail.ru", "+795454", address, "Company 5", LeadStatus.NEW);
+    service.addLead("<script>alert('XSS')</script>", "+795454", address, "Company 5", LeadStatus.NEW);
 
     Tomcat tomcat = new Tomcat();
     tomcat.setPort(port);
