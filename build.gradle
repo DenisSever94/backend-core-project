@@ -21,7 +21,7 @@ java {
 }
 
 application {
-    mainClass = 'ru.mentee.power.ApplicationLead'
+    mainClass = 'ru.mentee.power.crm.ApplicationLead'
 }
 
 repositories {
