@@ -1,4 +1,4 @@
-package ru.mentee.power.crm;
+package ru.mentee.power.crm.servlet;
 
 import java.io.File;
 
@@ -10,7 +10,6 @@ import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.domain.infrastructure.InMemoryLeadRepository;
 import ru.mentee.power.crm.repository.LeadRepository;
 import ru.mentee.power.crm.service.LeadService;
-import ru.mentee.power.crm.servlet.LeadListServlet;
 
 @Slf4j
 public class ApplicationLead {
@@ -26,7 +25,7 @@ public class ApplicationLead {
     service.addLead("test3@mail.ru", "+7954454", address, "Company 3", LeadStatus.NEW);
     service.addLead("test4@mail.ru", "+795454", address, "Company 4", LeadStatus.NEW);
     service.addLead("test5@mail.ru", "+795454", address, "Company 5", LeadStatus.NEW);
-    service.addLead("<script>alert('XSS')</script>", "+795454", address, "Company 5", LeadStatus.NEW);
+    service.addLead("<script>alert('XSS')</script>", "+7954", address, "Company 5", LeadStatus.NEW);
 
     Tomcat tomcat = new Tomcat();
     tomcat.setPort(port);
@@ -40,7 +39,7 @@ public class ApplicationLead {
     tomcat.start();
     tomcat.getServer().await();
 
-    log.info("Tomcat started on port:{}", port);
-    log.info("Open http://localhost:8080/leads in browser");
+    log.info("Tomcat started on port:{} ", port);
+    System.out.println();
   }
 }
