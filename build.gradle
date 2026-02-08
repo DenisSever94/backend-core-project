@@ -4,6 +4,8 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id 'gg.jte.gradle' version '3.1.15'
+    id 'org.springframework.boot' version '3.5.9'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'ru.mentee.power'
@@ -14,8 +16,9 @@ ext {
     assertjVersion = '3.26.3'
     lombokVersion = '1.18.36'
     servletVersion = '6.1.0'
-    tomcatVersion = '11.0.1'
+    tomcatVersion = '11.0.4'
     jteVersion = '3.1.15'
+    springBootVersion = '3.5.9'
 }
 
 java {
@@ -25,7 +28,7 @@ java {
 }
 
 application {
-    mainClass = 'ru.mentee.power.crm.ApplicationLead'
+    mainClass = 'ru.mentee.power.crm.servlet.ApplicationLead'
 }
 
 repositories {
@@ -36,6 +39,8 @@ repositories {
 }
 
 dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
 
@@ -48,14 +53,30 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.14.2'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
 
-    implementation 'org.slf4j:slf4j-api:2.0.9'
-    implementation 'ch.qos.logback:logback-classic:1.5.27'
-
-    compileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
-    annotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
     implementation "gg.jte:jte:${jteVersion}"
     implementation "gg.jte:jte-runtime:${jteVersion}"
+}
+
+
+bootRun {
+    mainClass = 'ru.mentee.power.crm.spring.Application'
+    args = ['--server.port=8081']
+}
+
+bootJar {
+    archiveClassifier = 'spring-boot'
+    exclude 'ru/mentee/power/crm/spring/Application.class'
+}
+
+jar {
+    archiveClassifier = ''
+    manifest {
+        attributes 'Main-Class': 'ru.mentee.power.crm.ApplicationLead'
+    }
+    exclude 'ru/mentee/power/crm/ApplicationLead.class'
 }
 
 jte {

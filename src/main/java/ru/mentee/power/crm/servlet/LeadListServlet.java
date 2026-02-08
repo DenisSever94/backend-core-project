@@ -17,11 +17,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import ru.mentee.power.crm.domain.Lead;
 import ru.mentee.power.crm.service.LeadService;
 
-@Slf4j
 @WebServlet("/leads")
 public class LeadListServlet extends HttpServlet {
   private TemplateEngine templateEngine;
@@ -37,7 +35,8 @@ public class LeadListServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    log.info("GET /leads request received");
+
+    System.out.println("GET /leads request received");
 
     ServletContext context = getServletContext();
     LeadService service = (LeadService) context.getAttribute("leadService");
