@@ -1,4 +1,4 @@
-package ru.mentee.power.crm.servlet;
+package ru.mentee.power.crm;
 
 import java.io.File;
 
@@ -10,6 +10,7 @@ import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.domain.infrastructure.InMemoryLeadRepository;
 import ru.mentee.power.crm.repository.LeadRepository;
 import ru.mentee.power.crm.service.LeadService;
+import ru.mentee.power.crm.servlet.LeadListServlet;
 
 @Slf4j
 public class ApplicationLead {

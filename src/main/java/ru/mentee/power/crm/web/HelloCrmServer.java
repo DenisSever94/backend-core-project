@@ -1,0 +1,59 @@
+package ru.mentee.power.crm.web;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class HelloCrmServer {
+  private final HttpServer server;
+  private final int port;
+
+  public HelloCrmServer(int port) throws IOException {
+    this.port = port;
+    this.server = HttpServer.create(new InetSocketAddress(port), 0);
+  }
+
+  HelloCrmServer(int port, HttpServer server) {
+    this.port = port;
+    this.server = server;
+  }
+
+  public void start() {
+    server.createContext("/hello", new HelloHandler());
+    server.start();
+    log.info("Server started on http://localhost:{} ", port);
+  }
+
+  public void stop() {
+    server.stop(0);
+
+  }
+
+  static class HelloHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+      String method = exchange.getRequestMethod();
+      String path = exchange.getRequestURI().getPath();
+
+      log.info("Received {} request for {}", method, path);
+
+      String html = "<html><body><h1>Hello CRM!</h1></body></html>";
+      byte[] htmlBytes = html.getBytes(StandardCharsets.UTF_8);
+
+      exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+      exchange.sendResponseHeaders(200, htmlBytes.length);
+
+      try (exchange; OutputStream os = exchange.getResponseBody()) {
+        os.write(htmlBytes);
+      }
+    }
+  }
+}

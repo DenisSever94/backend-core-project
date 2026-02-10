@@ -3,8 +3,8 @@ plugins {
     id 'application'
     id 'jacoco'
     id 'checkstyle'
-    id 'gg.jte.gradle' version '3.1.15'
-    id 'org.springframework.boot' version '3.5.9'
+    id 'gg.jte.gradle' version '3.2.1'
+    id 'org.springframework.boot' version '4.0.2'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -12,13 +12,16 @@ group = 'ru.mentee.power'
 version = '1.0-SNAPSHOT'
 
 ext {
-    junitVersion = '5.11.0'
     assertjVersion = '3.26.3'
-    lombokVersion = '1.18.36'
+    lombokVersion = '1.18.42'
+
+    junitVersion = '5.11.0'
+    jteVersion = '3.2.1'
+
+    tomcatVersion = '11.0.18'
+
     servletVersion = '6.1.0'
-    tomcatVersion = '11.0.4'
-    jteVersion = '3.1.15'
-    springBootVersion = '3.5.9'
+    springBootVersion = '4.0.2'
 }
 
 java {
@@ -28,7 +31,7 @@ java {
 }
 
 application {
-    mainClass = 'ru.mentee.power.crm.servlet.ApplicationLead'
+    mainClass = 'ru.mentee.power.crm.ApplicationLead'
 }
 
 repositories {
@@ -39,36 +42,46 @@ repositories {
 }
 
 dependencies {
+    // Spring
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc-test:${springBootVersion}"
 
+    // Tomcat
     implementation "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
 
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // JTE интеграция для Spring Boot
+    implementation "gg.jte:jte-spring-boot-starter-3:${jteVersion}"
+    implementation "gg.jte:jte:${jteVersion}"
+    implementation "gg.jte:jte-runtime:${jteVersion}"
+    implementation "gg.jte:jte:${jteVersion}"
+
+    // Test
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    testImplementation 'org.mockito:mockito-core:5.14.2'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
-
-    compileOnly 'org.projectlombok:lombok:1.18.42'
-    annotationProcessor 'org.projectlombok:lombok:1.18.42'
-
-    implementation "gg.jte:jte:${jteVersion}"
-    implementation "gg.jte:jte-runtime:${jteVersion}"
 }
 
 
 bootRun {
-    mainClass = 'ru.mentee.power.crm.spring.Application'
+    mainClass = 'ru.mentee.power.crm.Application'
     args = ['--server.port=8081']
 }
 
 bootJar {
     archiveClassifier = 'spring-boot'
-    exclude 'ru/mentee/power/crm/spring/Application.class'
+    exclude 'ru/mentee/power/crm/Application.class'
 }
 
 jar {
@@ -118,7 +131,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.70
+                minimum = 0.75
             }
         }
     }
