@@ -13,15 +13,29 @@ import ru.mentee.power.crm.domain.Address;
 import ru.mentee.power.crm.domain.Lead;
 import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.domain.infrastructure.InMemoryLeadRepository;
-import ru.mentee.power.crm.repository.LeadRepository;
 
 class LeadServiceTest {
   private LeadService service;
 
   @BeforeEach
   void setUp() {
-    LeadRepository repository = new InMemoryLeadRepository();
+    var repository = new InMemoryLeadRepository();
     service = new LeadService(repository);
+
+    Address address = new Address("Москва", "Первая 1", "43434");
+
+    service.addLead("one@mail.ru", "+89884", address, "One Company", LeadStatus.NEW);
+    service.addLead("two@mail.ru", "+8988499", address, "Two Company", LeadStatus.NEW);
+    service.addLead("three@mail.ru", "+8988499", address, "Three Company", LeadStatus.NEW);
+
+    service.addLead("four@mail.ru", "+8988499", address, "Four Company", LeadStatus.CONTACTED);
+    service.addLead("five@mail.ru", "+8988499", address, "Five Company", LeadStatus.CONTACTED);
+    service.addLead("six@mail.ru", "+8988499", address, "Six Company", LeadStatus.CONTACTED);
+    service.addLead("seven@mail.ru", "+8988499", address, "Seven Company", LeadStatus.CONTACTED);
+    service.addLead("eight@mail.ru", "+8988499", address, "Eight Company", LeadStatus.CONTACTED);
+
+    service.addLead("nine@mail.ru", "+8988499", address, "Nine Company", LeadStatus.QUALIFIED);
+    service.addLead("ten@mail.ru", "+8988499", address, "Ten Company", LeadStatus.QUALIFIED);
   }
 
   @Test
@@ -55,16 +69,8 @@ class LeadServiceTest {
 
   @Test
   void shouldFindAllLeads() {
-    Address address = new Address("Москва", "Первая 1", "43434");
-
-    service.addLead("one@mail.ru", "+89884", address, "One Company", LeadStatus.NEW);
-    service.addLead("two@mail.ru", "+8988499", address, "Two Company", LeadStatus.NEW);
-    service.addLead("three@mail.ru", "+8988499", address, "Three Company", LeadStatus.NEW);
-    service.addLead("four@mail.ru", "+8988499", address, "Four Company", LeadStatus.NEW);
-    service.addLead("five@mail.ru", "+8988499", address, "Five Company", LeadStatus.NEW);
-
-    List<Lead> list = service.findAll();
-    assertThat(list).hasSize(5);
+    List<Lead> all = service.findAll();
+    assertThat(all).hasSize(10);
   }
 
   @Test
@@ -105,5 +111,42 @@ class LeadServiceTest {
     Optional<Lead> result = service.findByEmail("nonexistent@example.com");
 
     assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldReturnOnlyNewLeadsWithFindByStatusNew() {
+    List<Lead> statusNew = service.findByStatus(LeadStatus.NEW);
+
+    assertThat(statusNew)
+        .hasSize(3)
+        .allMatch(lead -> lead.status().equals(LeadStatus.NEW));
+  }
+
+  @Test
+  void shouldReturnEmptyListWhenNoLeadsWithStatus() {
+    var emptyRepository = new InMemoryLeadRepository();
+    var serviceWithEmptyRepository = new LeadService(emptyRepository);
+
+    List<Lead> notQualified = serviceWithEmptyRepository.findByStatus(LeadStatus.QUALIFIED);
+
+    assertThat(notQualified).isEmpty();
+  }
+
+  @Test
+  void shouldReturnOnlyNewLeadsWithFindByStatusQualified() {
+    List<Lead> statusQualified = service.findByStatus(LeadStatus.QUALIFIED);
+
+    assertThat(statusQualified)
+        .hasSize(2)
+        .allMatch(lead -> lead.status().equals(LeadStatus.QUALIFIED));
+  }
+
+  @Test
+  void shouldReturnOnlyNewLeadsWithFindByStatusContacted() {
+    List<Lead> statusContacted = service.findByStatus(LeadStatus.CONTACTED);
+
+    assertThat(statusContacted)
+        .hasSize(5)
+        .allMatch(lead -> lead.status().equals(LeadStatus.CONTACTED));
   }
 }
