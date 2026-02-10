@@ -12,3 +12,8 @@ out/
 ### OS files ###
 .DS_Store
 Thumbs.db
+
+# JTE generated classes
+jte-classes/
+*.generated.java
+*.generated.class
