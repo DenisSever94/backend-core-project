@@ -5,8 +5,6 @@ import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
-import ru.mentee.power.crm.domain.Address;
-import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.domain.infrastructure.InMemoryLeadRepository;
 import ru.mentee.power.crm.repository.LeadRepository;
 import ru.mentee.power.crm.service.LeadService;
