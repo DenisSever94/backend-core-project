@@ -59,9 +59,12 @@ class LeadServiceTest {
 
     service.addLead("one@mail.ru", "+89884", address, "One Company", LeadStatus.NEW);
     service.addLead("two@mail.ru", "+8988499", address, "Two Company", LeadStatus.NEW);
+    service.addLead("three@mail.ru", "+8988499", address, "Three Company", LeadStatus.NEW);
+    service.addLead("four@mail.ru", "+8988499", address, "Four Company", LeadStatus.NEW);
+    service.addLead("five@mail.ru", "+8988499", address, "Five Company", LeadStatus.NEW);
 
     List<Lead> list = service.findAll();
-    assertThat(list).hasSize(2);
+    assertThat(list).hasSize(5);
   }
 
   @Test

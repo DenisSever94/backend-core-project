@@ -1,36 +1,49 @@
 # BCORE-13: Рефакторинг LeadListServlet на JTE
 
 ## Цель
-Замена 50 строк `println()` в `LeadListServlet` на JTE шаблоны с Tailwind CSS для улучшения поддерживаемости, безопасности и разделения ответственности.
+
+Замена 50 строк `println()` в `LeadListServlet` на JTE-шаблоны с Tailwind CSS для улучшения поддерживаемости, безопасности и разделения ответственности.
+
+---
 
 ## Выполненные задачи
 
 ### 1. Настройка JTE в проекте
-- Добавлен JTE Gradle plugin версии 3.1.15
+
+- Добавлен JTE Gradle plugin версии **3.1.15**
 - Добавлены зависимости: `gg.jte:jte` и `gg.jte:jte-runtime`
-- Настроен sourceDirectory для шаблонов: `src/main/jte`
+- Настроен `sourceDirectory` для шаблонов: `src/main/jte`
 
 ### 2. Создание базового layout
+
 - Создан `src/main/jte/layout/main.jte` с параметром `@param gg.jte.Content content`
 - Подключен Tailwind CSS через CDN для быстрого прототипирования
 - Реализована общая структура страниц: header, main content area, footer
 
 ### 3. Создание шаблона для списка лидов
+
 - Создан `src/main/jte/leads/list.jte` с type-safe параметром `@param java.util.List<Lead> leads`
-- Реализована HTML таблица с Tailwind utility-классами
+- Реализована HTML-таблица с Tailwind utility-классами
 - Использован цикл `@for(var lead : leads)` для генерации строк таблицы
-- Данные выводятся через `${lead.contact().email()}`, `${lead.company()}`, `${lead.status()}` с автоматическим XSS экранированием
+- Данные выводятся через `${lead.contact().email()}`, `${lead.company()}`, `${lead.status()}` с автоматическим XSS-экранированием
 
 ### 4. Рефакторинг LeadListServlet
+
 - Добавлено поле `private TemplateEngine templateEngine`
-- Инициализация TemplateEngine в методе `init()` с использованием `DirectoryCodeResolver`
-- В методе `doGet()` заменены ~50 строк `writer.println()` на вызов `templateEngine.render("leads/list.jte", model, output)`
+- Инициализация `TemplateEngine` в методе `init()` с использованием `DirectoryCodeResolver`
+- В методе `doGet()` заменены ~50 строк `writer.println()` на вызов:
+
+  `templateEngine.render("leads/list.jte", model, output)`
+
 - Создание модели данных через `Map<String, Object>` для передачи в шаблон
 
 ### 5. Обновление тестов
+
 - Тесты `LeadListServletTest` переписаны для работы с новой архитектурой
 - Исправлены проверки под новый HTML, генерируемый JTE + Tailwind
 - Устранены проблемы с `UnnecessaryStubbingException`
+
+---
 
 ## Результаты рефакторинга
 
@@ -43,8 +56,39 @@
 | **Переиспользование** | Копипаст кода | Layout `main.jte` | Следование принципу DRY |
 | **Стилизация** | Нет/простые CSS | Tailwind utility-классы | Современный, отзывчивый UI |
 
+---
+
 ## Ключевые преимущества JTE
 
 ### Type-safety параметров
-```jte
+
+Пример type-safe параметра в шаблоне:
+
+``jte
+
 @param java.util.List<ru.mentee.power.crm.domain.Lead> leads
+
+### Сравнение стеков Servlet vs Spring Boot
+
+## Результаты интеграционного теста
+
+| Метрика | Servlet стек | Spring Boot стек | Комментарий |
+|---------|--------------|------------------|-------------|
+| Время старта | ~244 ms | ~806 ms | Spring Boot в 3.3 раза медленнее из-за автоконфигурации |
+| HTTP 200 /leads | ✅ | ✅ | Оба стека корректно обрабатывают запросы |
+| Количество лидов в таблице | 6 | 6 | Данные идентичны в обоих реализациях |
+| XSS безопасность | ✅ Экранирование | ✅ Экранирование | Оба обрабатывают опасный ввод |
+| Зависимости Gradle | 4 прямые | 7+ с транзитивными | Spring Boot включает больше зависимостей |
+| Конфигурация | Ручная настройка Tomcat | Автоконфигурация + `application.yml` | Spring Boot уменьшает boilerplate-код |
+
+## Вывод
+
+Оба стека успешно отображают таблицу лидов с защитой от XSS. **Spring Boot демонстрирует классический компромисс**:
+
+* **Преимущество Spring Boot**: в ~5 раз меньше Java-кода за счёт auto-configuration
+* **Недостаток Spring Boot**: в ~3.3 раза медленнее стартует
+
+**Servlet стек** подходит для микросервисов, где важна скорость запуска.  
+**Spring Boot стек** предпочтителен для enterprise-приложений с требованиями к скорости разработки.
+
+*Данные получены из `StackComparisonTest.java`*

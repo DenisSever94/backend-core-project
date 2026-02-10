@@ -20,13 +20,6 @@ public class ApplicationLead {
 
     LeadRepository repository = new InMemoryLeadRepository();
     LeadService service = new LeadService(repository);
-    Address address = new Address("Москва", "Первая 1", "05944");
-    service.addLead("test1@mail.ru", "+795444", address, "Company 1", LeadStatus.NEW);
-    service.addLead("test2@mail.ru", "+7953454", address, "Company 2", LeadStatus.NEW);
-    service.addLead("test3@mail.ru", "+7954454", address, "Company 3", LeadStatus.NEW);
-    service.addLead("test4@mail.ru", "+795454", address, "Company 4", LeadStatus.NEW);
-    service.addLead("test5@mail.ru", "+795454", address, "Company 5", LeadStatus.NEW);
-    service.addLead("<script>alert('XSS')</script>", "+7954", address, "Company 5", LeadStatus.NEW);
 
     Tomcat tomcat = new Tomcat();
     tomcat.setPort(port);
@@ -41,6 +34,6 @@ public class ApplicationLead {
     tomcat.getServer().await();
 
     log.info("Tomcat started on port:{} ", port);
-    System.out.println();
+    log.info(" ");
   }
 }
