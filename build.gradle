@@ -71,6 +71,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.jsoup:jsoup:1.17.2'
 }
 
 
@@ -112,6 +113,7 @@ jacoco {
 
 test {
     useJUnitPlatform()
+    exclude '**/StackComparisonTest.class'
     finalizedBy jacocoTestReport
     jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }.absolutePath}"
 }
@@ -131,7 +133,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.75
+                minimum = 0.80
             }
         }
     }

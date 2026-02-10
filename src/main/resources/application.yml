@@ -9,6 +9,9 @@ gg:
 spring:
   application:
     name: mentee-power-crm
+  output:
+    ansi:
+      enabled: ALWAYS
 
 logging:
   level:

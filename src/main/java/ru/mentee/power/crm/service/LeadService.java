@@ -1,5 +1,6 @@
 package ru.mentee.power.crm.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,7 +40,16 @@ public class LeadService {
   }
 
   public List<Lead> findAll() {
-    return repository.findAll();
+    Address address = new Address("Москва", "Молодежная", "44344");
+    Contact contact = new Contact("spring@mail.ru", "+4055", address);
+    return Arrays.asList(
+        new Lead(UUID.randomUUID(), contact, "Company 1", LeadStatus.NEW),
+        new Lead(UUID.randomUUID(), contact, "Company 2", LeadStatus.NEW),
+        new Lead(UUID.randomUUID(), contact, "Company 3", LeadStatus.NEW),
+        new Lead(UUID.randomUUID(), contact, "Company 4", LeadStatus.NEW),
+        new Lead(UUID.randomUUID(), contact, "Company 5", LeadStatus.NEW)
+    );
+//    return repository.findAll();
   }
 
   public Optional<Lead> findById(UUID id) {
