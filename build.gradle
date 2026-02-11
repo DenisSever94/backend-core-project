@@ -76,13 +76,13 @@ dependencies {
 
 
 bootRun {
-    mainClass = 'ru.mentee.power.crm.Application'
+    mainClass = 'ru.mentee.power.crm.ApplicationSpringBoot'
     args = ['--server.port=8081']
 }
 
 bootJar {
     archiveClassifier = 'spring-boot'
-    exclude 'ru/mentee/power/crm/Application.class'
+    exclude 'ru/mentee/power/crm/ApplicationSpringBoot.class'
 }
 
 jar {

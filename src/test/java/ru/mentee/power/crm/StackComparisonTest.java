@@ -122,7 +122,7 @@ class StackComparisonTest {
 
   private long measureSpringBootStartup() {
     long start = System.nanoTime();
-    SpringApplication app = new SpringApplication(Application.class);
+    SpringApplication app = new SpringApplication(ApplicationSpringBoot.class);
     app.setDefaultProperties(Collections.singletonMap("server.port", "0"));
     ConfigurableApplicationContext context = app.run();
     long stop = System.nanoTime();
