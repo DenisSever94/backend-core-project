@@ -5,6 +5,7 @@ build/
 !gradle/wrapper/gradle-wrapper.properties
 
 ### IntelliJ IDEA ###
+git.txt
 .idea/
 *.iml
 out/
