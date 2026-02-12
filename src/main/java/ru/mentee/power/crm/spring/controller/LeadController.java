@@ -1,5 +1,7 @@
 package ru.mentee.power.crm.spring.controller;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +14,6 @@ import ru.mentee.power.crm.domain.Lead;
 import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.dto.CreateLeadRequest;
 import ru.mentee.power.crm.service.LeadService;
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
