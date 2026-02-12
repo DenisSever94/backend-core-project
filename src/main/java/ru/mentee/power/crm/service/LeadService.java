@@ -18,7 +18,6 @@ public class LeadService {
 
   public LeadService(LeadRepository repository) {
     this.repository = repository;
-//    initTestData();
   }
 
   public Lead addLead(
@@ -56,22 +55,4 @@ public class LeadService {
         .filter(lead -> lead.status().equals(status))
         .toList();
   }
-
-//  private void initTestData() {
-//    if (repository.findAll().isEmpty()) {
-//      Address address = new Address("Москва", "Молодежная", "44344");
-//      Contact contact = new Contact("spring@mail.ru", "+4055", address);
-//
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 1", LeadStatus.NEW));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 2", LeadStatus.CONTACTED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 3", LeadStatus.CONTACTED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 4", LeadStatus.QUALIFIED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 5", LeadStatus.QUALIFIED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 6", LeadStatus.QUALIFIED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 7", LeadStatus.QUALIFIED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 8", LeadStatus.QUALIFIED));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 9", LeadStatus.NEW));
-//      repository.save(new Lead(UUID.randomUUID(), contact, "Company 10", LeadStatus.NEW));
-//    }
-//  }
 }
