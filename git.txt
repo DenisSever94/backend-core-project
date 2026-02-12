@@ -1,0 +1,30 @@
+
+#   Полный цикл разработки фичи
+
+-   Утром: начать работу
+
+#    git checkout master
+#    git pull origin master
+#    git checkout -b feature/сегодняшняя-задача
+   
+-    1. Начало работы (каждое утро/перед задачей)
+#   git checkout master # Переход в основную ветку
+#   git pull --ff-only origin master # Безопасное обновление с GitHub
+
+-    # 2. Создание feature-ветки
+#    git checkout -b feature/DVT-5 # Создание ветки для задачи
+
+-    3. Работа над задачей
+-    ... вносите изменения в код ...
+-    4. Фиксация изменений
+
+#    git add . # Добавить ВСЕ изменения
+#    git commit -m "feat: что сделано" # Закоммитить с описанием
+#    git push -u origin feature/DVT-5# Опубликовать ветку (-u = связь 
+
+-    Добавление в .gitignore
+#    git.txt - пример 
+#    git rm --cached git.txt - команда
+
+
+

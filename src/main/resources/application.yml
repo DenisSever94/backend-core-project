@@ -5,6 +5,7 @@ gg:
   jte:
     templateLocation: src/main/resources/jte
     developmentMode: true
+    use-compiled-classes: false
 
 spring:
   application:
