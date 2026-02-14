@@ -27,6 +27,8 @@ public class ApplicationLead {
     Tomcat.addServlet(context, "LeadListServlet", new LeadListServlet());
 
     context.addServletMappingDecoded("/leads", "LeadListServlet");
+    context.addServletMappingDecoded("/leads/new", "LeadListServlet");
+
     log.info("Starting Tomcat...");
     tomcat.start();
     tomcat.getServer().await();

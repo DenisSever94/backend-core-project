@@ -1,4 +1,4 @@
-package ru.mentee.power.crm.dto;
+package ru.mentee.power.crm.spring.dto;
 
 import ru.mentee.power.crm.domain.LeadStatus;
 
