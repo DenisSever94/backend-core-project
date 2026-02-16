@@ -15,4 +15,8 @@ public record Contact(String email, String phone, Address address) {
       throw new IllegalArgumentException("Address must not be null");
     }
   }
+
+  public static Contact fromRequest(String email, String phone, Address address) {
+    return new Contact(email, phone, address);
+  }
 }

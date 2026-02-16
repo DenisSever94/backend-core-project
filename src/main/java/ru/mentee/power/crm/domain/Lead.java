@@ -4,6 +4,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.Builder;
+
+@Builder
 public record Lead(UUID id, Contact contact, String company, LeadStatus status) {
   private static final Set<LeadStatus> ALLOWED_STATUSES =
       Set.of(LeadStatus.NEW,

@@ -20,6 +20,16 @@ public class LeadService {
     this.repository = repository;
   }
 
+  public void addLead(Lead lead) {
+    String email = lead.contact().email();
+    Optional<Lead> existing = repository.findByEmail(email);
+    if (existing.isPresent()) {
+      throw new IllegalArgumentException("Lead with email already exists: " + email);
+    }
+    repository.save(lead);
+  }
+
+  @Deprecated
   public Lead addLead(
       String email, String phone, Address address, String company, LeadStatus status) {
     Optional<Lead> existing = repository.findByEmail(email);
