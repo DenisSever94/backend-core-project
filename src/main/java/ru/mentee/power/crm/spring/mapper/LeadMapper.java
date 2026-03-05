@@ -21,14 +21,6 @@ public class LeadMapper {
         .build();
   }
 
-  private Address mapAddress(CreateLeadRequest request) {
-    return new Address(
-        request.city(),
-        request.street(),
-        request.zip()
-    );
-  }
-
   private Contact mapContact(CreateLeadRequest request) {
     return new Contact(
         request.email(),

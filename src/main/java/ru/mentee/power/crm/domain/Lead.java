@@ -10,9 +10,7 @@ import lombok.Builder;
 public record Lead(UUID id, Contact contact, String company, LeadStatus status) {
   private static final Set<LeadStatus> ALLOWED_STATUSES =
       Set.of(LeadStatus.NEW,
-          LeadStatus.CONVERTED,
           LeadStatus.QUALIFIED,
-          LeadStatus.INVALID,
           LeadStatus.CONTACTED);
 
   public Lead {

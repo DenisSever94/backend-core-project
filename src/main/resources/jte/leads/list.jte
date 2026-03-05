@@ -8,15 +8,15 @@
 
     <a href="/leads?status=NEW"
        class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.NEW ? "bg-blue-900 text-white" : "bg-gray-200"}">
-        NEW
+        НОВЫЙ
     </a>
     <a href="/leads?status=CONTACTED"
        class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.CONTACTED ? "bg-blue-900 text-white" : "bg-gray-200"}">
-        CONTACTED
+        СВЯЗАТЬСЯ
     </a>
     <a href="/leads?status=QUALIFIED"
        class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.QUALIFIED  ? "bg-blue-900 text-white" : "bg-gray-200"}">
-        QUALIFIED
+        КВАЛИФИЦИРОВАННЫЙ
     </a>
     <a href="/leads/new" class="mt-3 ml-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded flex items-center gap-1">
         <span class="font-bold">+</span> Добавить лида
@@ -38,13 +38,13 @@
         <table class="min-w-full bg-white border border-gray-200">
             <thead class="bg-gray-100">
             <tr>
-                <th class="px-4 py-2 text-left">Company</th>
-                <th class="px-4 py-2 text-left">Status</th>
-                <th class="px-4 py-2 text-left">Email</th>
-                <th class="px-4 py-2 text-left">Phone</th>
-                <th class="px-4 py-2 text-left">City</th>
-                <th class="px-4 py-2 text-left">Street</th>
-                <th class="px-4 py-2 text-left">Zip</th>
+                <th class="px-4 py-2 text-left">Компания</th>
+                <th class="px-4 py-2 text-left">Статус</th>
+                <th class="px-4 py-2 text-left">Почта</th>
+                <th class="px-4 py-2 text-left">Телефон</th>
+                <th class="px-4 py-2 text-left">Город</th>
+                <th class="px-4 py-2 text-left">Улица</th>
+                <th class="px-4 py-2 text-left">Индекс</th>
             </tr>
             </thead>
             <tbody>
