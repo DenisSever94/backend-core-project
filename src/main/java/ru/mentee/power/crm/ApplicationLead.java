@@ -17,6 +17,7 @@ public class ApplicationLead {
     int port = 8080;
 
     LeadRepository repository = new InMemoryLeadRepository();
+
     LeadService service = new LeadService(repository);
 
     Tomcat tomcat = new Tomcat();

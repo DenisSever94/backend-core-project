@@ -343,7 +343,7 @@ class LeadListServletTest {
             new Contact("petr@mail.ru",
                 "+79997778899", address),
             "ЗАО Рога",
-            LeadStatus.CONVERTED)
+            LeadStatus.CONTACTED)
     );
 
     // Настройка моков

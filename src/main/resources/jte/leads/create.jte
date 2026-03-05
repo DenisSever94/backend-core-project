@@ -8,15 +8,15 @@ content = @`
         <form action="/leads" method="post" class="space-y-4">
             <div>
                 <label for="company" class="block text-sm font-medium text-gray-700 mb-1">
-                    Company
+                    Компания
                 </label>
                 <input
-                        type="company"
+                        type="text"
                         id="company"
                         name="company"
                         required
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        placeholder="company"
+                        placeholder="компания"
                 />
             </div>
 
@@ -25,23 +25,12 @@ content = @`
                     Статус <span class="text-red-500">*</span>
                 </label>
                 <select id="status" name="status" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                    @if(lead != null && lead.status() == ru.mentee.power.crm.domain.LeadStatus.NEW)
-                        <option value="NEW" selected>NEW</option>
-                    @else
-                        <option value="NEW">NEW</option>
-                    @endif
-
-                    @if(lead != null && lead.status() == ru.mentee.power.crm.domain.LeadStatus.CONTACTED)
-                        <option value="CONTACTED" selected>CONTACTED</option>
-                    @else
-                        <option value="CONTACTED">CONTACTED</option>
-                    @endif
-
-                    @if(lead != null && lead.status() == ru.mentee.power.crm.domain.LeadStatus.QUALIFIED)
-                        <option value="QUALIFIED" selected>QUALIFIED</option>
-                    @else
-                        <option value="QUALIFIED">QUALIFIED</option>
-                    @endif
+                    @for(var status : ru.mentee.power.crm.domain.LeadStatus.values())
+                        <option value="${status.name()}"
+                                selected="${lead != null && lead.status() == status}">
+                            ${status.getName()}
+                        </option>
+                    @endfor
                 </select>
             </div>
 

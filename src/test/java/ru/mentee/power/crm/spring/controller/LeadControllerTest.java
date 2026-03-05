@@ -40,7 +40,7 @@ class LeadControllerTest {
     mockMvc.perform(MockMvcRequestBuilders.get("/leads"))
         .andExpect(status().isOk())
         .andExpect(MockMvcResultMatchers.content()
-            .string(org.hamcrest.Matchers.containsString("Email")));
+            .string(org.hamcrest.Matchers.containsString("Почта")));
   }
 
   @Test

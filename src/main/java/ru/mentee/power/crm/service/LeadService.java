@@ -22,10 +22,10 @@ public class LeadService {
 
   public void addLead(Lead lead) {
     String email = lead.contact().email();
-    Optional<Lead> existing = repository.findByEmail(email);
-    if (existing.isPresent()) {
+    repository.findByEmail(email).ifPresent(existingLead -> {
       throw new IllegalArgumentException("Lead with email already exists: " + email);
-    }
+    });
+
     repository.save(lead);
   }
 
