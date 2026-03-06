@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.mentee.power.crm.domain.Address;
 import ru.mentee.power.crm.domain.Contact;
@@ -11,6 +13,7 @@ import ru.mentee.power.crm.domain.Lead;
 import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.repository.LeadRepository;
 
+@Slf4j
 @Service
 public class LeadService {
 
@@ -18,6 +21,12 @@ public class LeadService {
 
   public LeadService(LeadRepository repository) {
     this.repository = repository;
+    log.info("LeadService constructor called");
+  }
+
+  @PostConstruct
+  public void init() {
+    log.info("LeadService @PostConstruct init() called - Bean lifecycle phase");
   }
 
   public void addLead(Lead lead) {

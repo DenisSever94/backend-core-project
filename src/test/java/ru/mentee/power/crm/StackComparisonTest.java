@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+@Slf4j
 class StackComparisonTest {
 
   private static final int SERVLET_PORT = 8080;
@@ -110,11 +112,13 @@ class StackComparisonTest {
     } catch (LifecycleException e) {
       try {
         tomcat.stop();
-      } catch (Exception _) {
+      } catch (Exception exception) {
+        log.error("Ошибка при остановке Tomcat: " + exception.getMessage());
       }
       try {
         tomcat.destroy();
-      } catch (Exception _) {
+      } catch (Exception exception) {
+        log.error("Ошибка при уничтожении Tomcat: " + exception.getMessage());
       }
       throw e;
     }
@@ -127,7 +131,7 @@ class StackComparisonTest {
     ConfigurableApplicationContext context = app.run();
     long stop = System.nanoTime();
     context.close();
-    return TimeUnit.NANOSECONDS.toMillis(stop - start); // Заглушка
+    return TimeUnit.NANOSECONDS.toMillis(stop - start);
   }
 }
 
