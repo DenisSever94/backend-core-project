@@ -1,6 +1,5 @@
 package ru.mentee.power.crm.spring.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +29,9 @@ public class DemoController {
   public String demo() {
     StringBuilder sb = new StringBuilder("DI Types Demo:\\n\\n");
 
-        sb.append("Constructor Injection (final): ")
-            .append(constructorService != null ? "✓ Injected" : "✗ NULL")
-            .append("\\n");
+    sb.append("Constructor Injection (final): ")
+        .append(constructorService != null ? "✓ Injected" : "✗ NULL")
+        .append("\\n");
 
     sb.append("Field Injection (@Autowired field): ")
         .append(fieldRepository != null ? "✓ Injected" : "✗ NULL")
