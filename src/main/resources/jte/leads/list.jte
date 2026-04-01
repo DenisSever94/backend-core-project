@@ -61,6 +61,10 @@
                     <td class="px-4 py-2">${lead.contact().address().city()}</td>
                     <td class="px-4 py-2">${lead.contact().address().street()}</td>
                     <td class="px-4 py-2">${lead.contact().address().zip()}</td>
+                    <td class="px-4 py-2">
+                        <a href="/leads/${lead.id().toString()}/edit"
+                           class="text-blue-600 hover:underline">Редактировать</a>
+                    </td>
                 </tr>
             @endfor
             </tbody>

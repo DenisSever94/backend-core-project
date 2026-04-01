@@ -18,7 +18,8 @@
        class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.QUALIFIED  ? "bg-blue-900 text-white" : "bg-gray-200"}">
         QUALIFIED
     </a>
-    <a href="/leads/new" class="mt-3 ml-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded flex items-center gap-1">
+    <a href="/leads/new"
+       class="mt-3 ml-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded flex items-center gap-1">
         <span class="font-bold">+</span> Добавить лида
     </a>
 </div>
@@ -61,6 +62,10 @@
                     <td class="px-4 py-2">${lead.contact().address().city()}</td>
                     <td class="px-4 py-2">${lead.contact().address().street()}</td>
                     <td class="px-4 py-2">${lead.contact().address().zip()}</td>
+                    <td class="px-4 py-2">
+                        <a href="/leads/${lead.id().toString()}/edit"
+                           class="text-blue-600 hover:underline">Редактировать</a>
+                    </td>
                 </tr>
             @endfor
             </tbody>
