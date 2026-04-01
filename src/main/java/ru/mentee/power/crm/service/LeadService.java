@@ -38,6 +38,21 @@ public class LeadService {
     repository.save(lead);
   }
 
+  public Lead update(UUID id, Lead updateLead) {
+    Optional<Lead> find = repository.findById(id);
+    if (find.isEmpty()) {
+      throw new IllegalArgumentException("Lead not found");
+    }
+
+    Lead update = new Lead(
+        id,
+        updateLead.contact(),
+        updateLead.company(),
+        updateLead.status());
+
+    return repository.save(update);
+  }
+
   @Deprecated
   public Lead addLead(
       String email, String phone, Address address, String company, LeadStatus status) {
