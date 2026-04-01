@@ -38,7 +38,7 @@ public class LeadService {
     repository.save(lead);
   }
 
-  public Lead updateLead(UUID id, Lead updateLead) {
+  public Lead update(UUID id, Lead updateLead) {
     Optional<Lead> find = repository.findById(id);
     if (find.isEmpty()) {
       throw new IllegalArgumentException("Lead not found");

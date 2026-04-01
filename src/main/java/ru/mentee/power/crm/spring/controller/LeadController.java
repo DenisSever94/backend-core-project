@@ -52,9 +52,9 @@ public class LeadController {
   }
 
   @PostMapping("/leads/{id}")
-  public String update(@PathVariable UUID id, @ModelAttribute CreateLeadRequest request) {
+  public String updateLead(@PathVariable UUID id, @ModelAttribute CreateLeadRequest request) {
     Lead lead = leadMapper.toDomain(request);
-    leadService.updateLead(id, lead);
+    leadService.update(id, lead);
     return "redirect:/leads";
   }
 
@@ -65,7 +65,7 @@ public class LeadController {
   }
 
   @GetMapping("/leads/{id}/edit")
-  public String showFromEdit(@PathVariable UUID id, Model model) {
+  public String showEditForm(@PathVariable UUID id, Model model) {
     Optional<Lead> lead = leadService.findById(id);
     if (lead.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lead not found");

@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -62,11 +65,6 @@ class LeadControllerTest {
   @Test
   void shouldReturnShowViewForm() throws Exception {
     UUID expectedId = UUID.randomUUID();
-    Address address = new Address("Москва", "Молодежная 12", "34345");
-    Contact contact = new Contact("test@example.com", "+71234567890", address);
-    Lead lead = new Lead(expectedId, contact, "TestCorp", LeadStatus.NEW);
-
-    when(leadService.findById(expectedId)).thenReturn(Optional.of(lead));
     mockMvc.perform(post("/leads/" + expectedId)
             .param("company", "TestCorp")
             .param("email", "test@example.com")
@@ -77,6 +75,7 @@ class LeadControllerTest {
             .param("status", "NEW"))
         .andExpect(redirectedUrl("/leads"));
 
+    verify(leadService).update(eq(expectedId), any(Lead.class));
   }
 
   @Test
