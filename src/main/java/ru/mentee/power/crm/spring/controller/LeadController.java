@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import ru.mentee.power.crm.domain.Lead;
-import ru.mentee.power.crm.domain.LeadStatus;
 import ru.mentee.power.crm.service.LeadService;
 import ru.mentee.power.crm.spring.dto.CreateLeadRequest;
 import ru.mentee.power.crm.spring.mapper.LeadMapper;
@@ -30,12 +29,15 @@ public class LeadController {
 
   @GetMapping("/leads")
   public String showLeads(
-      @RequestParam(required = false) LeadStatus status, Model model) {
-    List<Lead> leads = (status == null)
-        ? leadService.findAll()
-        : leadService.findByStatus(status);
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) String status, Model model) {
+    List<Lead> leads = leadService.findLeads(search, status);
+
+    model.addAttribute("search", search != null
+        ? search : "");
+    model.addAttribute("status", status != null
+        ? status : "");
     model.addAttribute("leads", leads);
-    model.addAttribute("currentFilter", status);
     return "leads/list";
   }
 

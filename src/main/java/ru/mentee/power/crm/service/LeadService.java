@@ -38,6 +38,22 @@ public class LeadService {
     repository.save(lead);
   }
 
+  public List<Lead> findLeads(String search, String status) {
+    List<Lead> leads = repository.findAll();
+    if (search != null && !search.isBlank()) {
+      leads = leads.stream().filter(leadSearch ->
+           leadSearch.company().toLowerCase().contains(search.toLowerCase())
+        || leadSearch.contact().email().toLowerCase().contains(search.toLowerCase()))
+           .toList();
+    }
+    if (status != null && !status.isBlank()) {
+      leads = leads.stream().filter(leadStatus ->
+          leadStatus.status().name().toLowerCase().contains(status.toLowerCase()))
+          .toList();
+    }
+    return leads;
+  }
+
   public Lead update(UUID id, Lead updateLead) {
     Optional<Lead> find = repository.findById(id);
     if (find.isEmpty()) {
