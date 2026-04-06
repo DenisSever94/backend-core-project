@@ -1,21 +1,23 @@
 @param java.util.List<ru.mentee.power.crm.domain.Lead> leads
-@param ru.mentee.power.crm.domain.LeadStatus currentFilter
+@param String search
+@param String status
+
 <div class="mb-4 flex gap-2 items-start px-8">
     <a href="/leads"
-       class="mt-3 px-4 py-1 rounded ${currentFilter == null ? "bg-blue-900 text-white" : "bg-gray-200"}">
+       class="mt-3 px-4 py-1 rounded ${status == null ? "bg-blue-900 text-white" : "bg-gray-200"}">
         Все
     </a>
 
     <a href="/leads?status=NEW"
-       class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.NEW ? "bg-blue-900 text-white" : "bg-gray-200"}">
+       class="mt-3 px-4 py-1 rounded ${"NEW".equals(status)? "bg-blue-900 text-white" : "bg-gray-200"}">
         НОВЫЙ
     </a>
     <a href="/leads?status=CONTACTED"
-       class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.CONTACTED ? "bg-blue-900 text-white" : "bg-gray-200"}">
+       class="mt-3 px-4 py-1 rounded ${"CONTACTED".equals(status) ? "bg-blue-900 text-white" : "bg-gray-200"}">
         СВЯЗАТЬСЯ
     </a>
     <a href="/leads?status=QUALIFIED"
-       class="mt-3 px-4 py-1 rounded ${currentFilter == ru.mentee.power.crm.domain.LeadStatus.QUALIFIED  ? "bg-blue-900 text-white" : "bg-gray-200"}">
+       class="mt-3 px-4 py-1 rounded ${"QUALIFIED".equals(status)  ? "bg-blue-900 text-white" : "bg-gray-200"}">
         КВАЛИФИЦИРОВАННЫЙ
     </a>
     <a href="/leads/new" class="mt-3 ml-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded flex items-center gap-1">
@@ -23,16 +25,32 @@
     </a>
 </div>
 
-@if(currentFilter != null)
+@if(status != null)
     <p class="ml-8 mt-3 text-sm text-gray-700 mb-2">
         Показаны лиды со статусом:
         <span class="ml-2 px-3 py-1 bg-green-100 text-green-800 font-medium rounded-full border border-green-200">
-    ${currentFilter}
+    ${status}
   </span>
     </p>
 @endif
 @template.layout.main(content = @`
     <div class="bg-white rounded-lg shadow-md p-6">
+        <form method="get" action="/leads"
+              class="bg-white shadow rounded-lg p-4 mb-6">
+            <input type="text" name="search"
+                   value="${search}" placeholder="Поиск...">
+            <select name="status">
+                <option value="">Все статусы</option>
+                <option value="NEW">NEW</option>
+                <option
+                        value="CONTACTED">CONTACTED</option>
+                <option
+                        value="QUALIFIED">QUALIFIED</option>
+            </select>
+            <button type="submit">Найти</button>
+            <a href="/leads">Сбросить</a>
+        </form>
+
         <h2 class="text-2xl font-bold mb-4">Lead List</h2>
 
         <table class="min-w-full bg-white border border-gray-200">

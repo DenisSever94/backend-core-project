@@ -2,16 +2,17 @@ package ru.mentee.power.crm.spring.controller;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.mockito.Mockito.verify;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,6 +47,61 @@ class LeadControllerTest {
   void setup() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
   }
+
+  @Test
+  void shouldReturnLeadsWithNameCompany() throws Exception {
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead lead1 = new Lead(UUID.randomUUID(), contact, "T-Bank", LeadStatus.NEW);
+    Lead lead2 = new Lead(UUID.randomUUID(), contact, "Alfa", LeadStatus.NEW);
+    List<Lead> leads = List.of(lead1, lead2);
+
+    when(leadService.findLeads("Alfa", null)).thenReturn(leads);
+    mockMvc.perform(get("/leads").param("search", "Alfa"))
+        .andExpect(model().attribute("leads", leads));
+  }
+
+  @Test
+  void shouldReturnLeadsWithStatusNew() throws Exception {
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead lead1 = new Lead(UUID.randomUUID(), contact, "T-Bank", LeadStatus.NEW);
+    Lead lead2 = new Lead(UUID.randomUUID(), contact, "Alfa", LeadStatus.NEW);
+    List<Lead> leads = List.of(lead1, lead2);
+
+    when(leadService.findLeads(null, "NEW")).thenReturn(leads);
+    mockMvc.perform(get("/leads").param("status", "NEW"))
+        .andExpect(model().attribute("leads", leads));
+  }
+
+  @Test
+  void shouldReturnLeadsWithCompanyAndStatus() throws Exception {
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead lead1 = new Lead(UUID.randomUUID(), contact, "T-Bank", LeadStatus.NEW);
+    Lead lead2 = new Lead(UUID.randomUUID(), contact, "Alfa", LeadStatus.NEW);
+    List<Lead> leads = List.of(lead1, lead2);
+
+    when(leadService.findLeads("Alfa", "NEW")).thenReturn(leads);
+    mockMvc.perform(get("/leads")
+        .param("search", "Alfa")
+        .param("status", "NEW"))
+        .andExpect(model().attribute("leads", leads));
+  }
+
+  @Test
+  void  shouldReturnAllLeadsWithoutParam() throws Exception {
+    Address address = new Address("Москва", "Молодежная 12", "34345");
+    Contact contact = new Contact("test@example.com", "+71234567890", address);
+    Lead lead1 = new Lead(UUID.randomUUID(), contact, "T-Bank", LeadStatus.NEW);
+    Lead lead2 = new Lead(UUID.randomUUID(), contact, "Alfa", LeadStatus.NEW);
+    List<Lead> leads = List.of(lead1, lead2);
+
+    when(leadService.findLeads(null, null)).thenReturn(leads);
+    mockMvc.perform(get("/leads"))
+        .andExpect(model().attribute("leads", leads));
+  }
+
 
   @Test
   void shouldReturnEditFormWithLead() throws Exception {
