@@ -53,6 +53,15 @@ public class LeadService {
     return repository.save(update);
   }
 
+  public void delete(UUID id) {
+    Optional<Lead> find = repository.findById(id);
+    if (find.isEmpty()) {
+      throw new IllegalArgumentException("Lead not found");
+    }
+
+    repository.delete(id);
+  }
+
   @Deprecated
   public Lead addLead(
       String email, String phone, Address address, String company, LeadStatus status) {

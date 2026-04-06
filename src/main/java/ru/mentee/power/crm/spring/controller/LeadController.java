@@ -24,6 +24,7 @@ import ru.mentee.power.crm.spring.mapper.LeadMapper;
 @Controller
 @RequiredArgsConstructor
 public class LeadController {
+  private static final String REDIRECT_LEADS = "redirect:/leads";
   private final LeadService leadService;
   private final LeadMapper leadMapper;
 
@@ -48,14 +49,24 @@ public class LeadController {
   public String createLead(@ModelAttribute CreateLeadRequest request) {
     Lead lead = leadMapper.toDomain(request);
     leadService.addLead(lead);
-    return "redirect:/leads";
+    return REDIRECT_LEADS;
   }
 
   @PostMapping("/leads/{id}")
   public String updateLead(@PathVariable UUID id, @ModelAttribute CreateLeadRequest request) {
     Lead lead = leadMapper.toDomain(request);
     leadService.update(id, lead);
-    return "redirect:/leads";
+    return REDIRECT_LEADS;
+  }
+
+  @PostMapping("/leads/{id}/delete")
+  public String deleteLead(@PathVariable UUID id) {
+    Optional<Lead> lead = leadService.findById(id);
+    if (lead.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lead not found");
+    }
+    leadService.delete(id);
+    return REDIRECT_LEADS;
   }
 
   @GetMapping("/")
