@@ -102,7 +102,6 @@ class LeadControllerTest {
         .andExpect(model().attribute("leads", leads));
   }
 
-
   @Test
   void shouldReturnEditFormWithLead() throws Exception {
     UUID expectedId = UUID.randomUUID();
